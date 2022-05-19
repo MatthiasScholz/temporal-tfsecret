@@ -1,0 +1,82 @@
+---
+version: "3.5"
+services:
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    command: -invite-jim
+    ports:
+      - 8025:8025
+    networks:
+      - temporal-network
+  # thirdparty:
+  #   build: deployment/thirdparty-simulator
+  #   command: thirdparty-simulator api
+  #   restart: unless-stopped
+  #   environment:
+  #     - TEMPORAL_GRPC_ENDPOINT=temporal:7233
+  #   networks:
+  #     - temporal-network
+
+  api:
+    build:
+      context: .
+      target: app
+    command: tfsecret-backend api
+    restart: unless-stopped
+    environment:
+      - TEMPORAL_GRPC_ENDPOINT=temporal:7233
+      - DATACONVERTER_ENCRYPTION_KEY_ID=secret
+    networks:
+      - temporal-network
+  ui:
+    build:
+      context: .
+      target: app
+    command: tfsecret-backend ui
+    ports:
+      - 8083:8083
+    restart: unless-stopped
+    environment:
+      - TEMPORAL_GRPC_ENDPOINT=temporal:7233
+    networks:
+      - temporal-network
+  worker:
+    build:
+      context: .
+      target: app
+    command: tfsecret-backend worker
+    restart: unless-stopped
+    environment:
+      - TEMPORAL_GRPC_ENDPOINT=temporal:7233
+      - DATACONVERTER_ENCRYPTION_KEY_ID=secret
+    networks:
+      - temporal-network
+
+  cli:
+    build:
+      context: .
+      target: app
+    command: tail -f /dev/null
+    environment:
+      - TEMPORAL_CLI_ADDRESS=temporal:7233
+    networks:
+      - temporal-network
+
+  # dataconverter:
+  #   build:
+  #     context: .
+  #     target: app
+  #   command: tctl dc web --web_ui_url http://localhost:8088
+  #   restart: unless-stopped
+  #   ports:
+  #     - 8086:8086
+  #   environment:
+  #     - TEMPORAL_CLI_ADDRESS=temporal:7233
+  #     - TEMPORAL_CLI_DATA_CONVERTER_PORT=8086
+  #   networks:
+  #     - temporal-network
+
+networks:
+  temporal-network:
+    name: temporal-network
+    external: true

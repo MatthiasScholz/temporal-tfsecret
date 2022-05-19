@@ -3,7 +3,7 @@ init:
 	go mod init $(git_url)
 
 worker:
-	go build -v ./cli/tfsecret-backend -o tfsecret-backend
+	go build -o tfsecret-backend ./cmd/tfsecret-backend/main.go
 
 deps:
 	go mod tidy
@@ -11,6 +11,13 @@ deps:
 version:
 	make -version
 	go version
+
+clean:
+	go clean -modcache
+
+app:
+	docker compose  --file docker-compose.app.yml up --detach
+
 observability:
 	docker compose --file docker-compose.observability.yml up --detach
 
