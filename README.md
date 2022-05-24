@@ -4,8 +4,16 @@ Using temporal to provision a secret and setting a secret value in AWS.
 
 ## Usage
 
+### Execute Locally
+
 ```
+# Build
 make worker
+make client
+
+# Execute
+./tfsecret-backend &
+./tfsecret-client
 ```
 
 ## Prerequisites
@@ -94,3 +102,6 @@ Vagrant
 
 - [Example: Background Check project](https://docs.temporal.io/docs/learning-paths/background-checks/)
 - [Localstack: Secret Manager](https://stackoverflow.com/questions/57154039/how-to-set-up-local-aws-secrets-manager-docker-container-for-local-testing-purpo)
+- [Project Structure](https://github.com/golang-standards/project-layout)
+- [Sophisticated Temporal Environment Docker Compose Example](https://github.com/temporalio/docker-compose)
+- [Demo Temporal AWS VPC, Subnet](https://github.com/dynajoe/temporal-terraform-demo)

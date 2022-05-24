@@ -14,14 +14,15 @@ import (
 	"go.temporal.io/sdk/client"
 	"go.temporal.io/sdk/worker"
 
-	temporal "github.com/MatthiasScholz/temporal-tfsecret/internal/pkg/temporal"
+	"github.com/MatthiasScholz/temporal-tfsecret/internal/pkg/temporal"
 
 	// TODO Implement
 	//"github.com/MatthiasScholz/temporal-tfsecret/activities"
-	// "github.com/MatthiasScholz/temporal-tfsecret/workflows"
+
+	"github.com/MatthiasScholz/temporal-tfsecret/internal/pkg/workflows"
 )
 
-// workerCmd represents the worker command
+// workerCmd represents the worker command, running in the cluster
 var workerCmd = &cobra.Command{
 	Use:   "worker",
 	Short: "Run worker",
@@ -37,16 +38,8 @@ var workerCmd = &cobra.Command{
 		}
 		defer c.Close()
 
-		w := worker.New(c, "background-checks-main", worker.Options{})
-
-		// w.RegisterWorkflow(workflows.BackgroundCheck)
-		// w.RegisterWorkflow(workflows.Accept)
-		// w.RegisterWorkflow(workflows.EmploymentVerification)
-		// //w.RegisterActivity(&activities.Activities{SMTPHost: "mailhog", SMTPPort: 1025})
-		// w.RegisterWorkflow(workflows.SSNTrace)
-		// w.RegisterWorkflow(workflows.FederalCriminalSearch)
-		// w.RegisterWorkflow(workflows.StateCriminalSearch)
-		// w.RegisterWorkflow(workflows.MotorVehicleIncidentSearch)
+		w := worker.New(c, workflows.TFSecretTaskQueue, worker.Options{})
+		workflows.Register(w)
 
 		err = w.Run(worker.InterruptCh())
 		if err != nil {
