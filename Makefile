@@ -18,6 +18,10 @@ version:
 clean:
 	go clean -modcache
 
+directory := internal/pkg/activities
+test: deps
+	 go test ./...
+
 app:
 	docker compose  --file docker-compose.app.yml up --detach
 
@@ -36,11 +40,19 @@ down-observability:
 down-temporal:
 	docker compose --file docker-compose.temporal.yml down
 
-up: temporal observability app
+up: temporal observability ps
 
-down: down-app down-observability down-temporal
+down: down-observability down-temporal ps
 
-restart: down up
+restart: down up ps
+
+ps:
+	docker compose --file docker-compose.observability.yml ps
+	docker compose --file docker-compose.temporal.yml ps
+
+logs:
+	docker compose --file docker-compose.observability.yml logs
+	docker compose --file docker-compose.temporal.yml logs
 
 ui:
 	open http://localhost:8085

@@ -18,9 +18,9 @@ FROM base AS build
 #COPY ui ./ui
 COPY cmd ./cmd
 COPY internal ./internal
-COPY workflows ./workflows
+#COPY workflows ./workflows
 
-RUN go install -v ./cmd/tfsecret-backend
+#RUN go install -v ./cmd/tfsecret-backend
 #RUN go install -v ./cli/tfsecret-company
 #RUN go install -v ./cli/tfsecret-candidate
 #RUN go install -v ./cli/tfsecret-researcher
@@ -33,7 +33,7 @@ FROM golang:1.18 AS app
 COPY --from=temporalio/admin-tools:1.16.2 /usr/local/bin/tctl /usr/local/bin/tctl
 #COPY --from=build /go/bin/dataconverter-plugin /usr/local/bin/dataconverter-plugin
 
-COPY --from=build /go/bin/tfsecret-backend /usr/local/bin/tfsecret-backend
+#COPY --from=build /go/bin/tfsecret-backend /usr/local/bin/tfsecret-backend
 #COPY --from=build /go/bin/tfsecret-company /usr/local/bin/tfsecret-company
 #COPY --from=build /go/bin/tfsecret-candidate /usr/local/bin/tfsecret-candidate
 #COPY --from=build /go/bin/tfsecret-researcher /usr/local/bin/tfsecret-researcher

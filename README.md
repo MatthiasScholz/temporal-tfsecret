@@ -105,3 +105,5 @@ Vagrant
 - [Project Structure](https://github.com/golang-standards/project-layout)
 - [Sophisticated Temporal Environment Docker Compose Example](https://github.com/temporalio/docker-compose)
 - [Demo Temporal AWS VPC, Subnet](https://github.com/dynajoe/temporal-terraform-demo)
+- [How to develop a Worker Program in Go](https://docs.temporal.io/go/how-to-develop-a-worker-program-in-go)
+- [Test: Workflow](https://docs.temporal.io/go/how-to-test-workflow-definitions-in-go)

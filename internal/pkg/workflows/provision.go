@@ -7,11 +7,18 @@ import (
 	"go.temporal.io/sdk/workflow"
 )
 
-type SecretDetails struct {
+// TODO Refactor move out of workflow since it is used by activities as well.
+type SecretDetailsInput struct {
 	Name string
+	Region string
 }
 
-func ProvisionSecretWorkflow(ctx workflow.Context, secretDetails SecretDetails) error {
+type SecretDetailsOutput struct {
+	Name string
+	ARN string
+}
+
+func ProvisionSecretWorkflow(ctx workflow.Context, secretDetails SecretDetailsInput) error {
 	// RetryPolicy specifies how to automatically handle retries if an Activity fails.
 	retrypolicy := &temporal.RetryPolicy{
 	    InitialInterval:    time.Second,

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"time"
+	//"time"
 
 	"go.temporal.io/sdk/client"
 
@@ -25,10 +25,10 @@ func main() {
 	options := client.StartWorkflowOptions{
 		ID:        "tfsecret-test-workflow",
 		TaskQueue: workflows.TFSecretTaskQueue,
-		WorkerStopTimeout: 30 * time.Second,
+		// FIXME Field does not exist anymore: WorkerStopTimeout: 30 * time.Second,
 	}
 
-	secret := workflows.SecretDetails{"test_secret"}
+	secret := workflows.SecretDetailsInput{"test_secret", "eu-central-1"}
 	we, err := c.ExecuteWorkflow(context.Background(), options, workflows.ProvisionSecretWorkflow, secret)
 	if err != nil {
 		log.Fatalln("unable to complete Workflow", err)
